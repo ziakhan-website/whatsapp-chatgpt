@@ -9,8 +9,9 @@ import * as cli from "./cli/ui";
 import { handleIncomingMessage } from "./handlers/message";
 
 // Config
-import { initAiConfig } from "./handlers/ai-config";
-import { initOpenAI } from "./providers/openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || "gemini-1.5-flash" });
 
 // Ready timestamp of the bot
 let botReadyTimestamp: Date | null = null;
