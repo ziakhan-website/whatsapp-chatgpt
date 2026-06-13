@@ -79,7 +79,6 @@ const start = async () => {
 		botReadyTimestamp = new Date();
 
 		initAiConfig();
-		initOpenAI();
 	});
 
 	// WhatsApp message
