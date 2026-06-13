@@ -22,18 +22,28 @@ const start = async () => {
 	cli.printIntro();
 
 	// WhatsApp Client
-	const client = new Client({
-		puppeteer: {
-			args: ["--no-sandbox"]
-		},
-		authStrategy: new LocalAuth({
-			dataPath: constants.sessionPath
-		}),
-		webVersionCache: {
-			type: "remote",
-			remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
-		}
-	});
+const client = new Client({
+    puppeteer: {
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process',
+            '--disable-gpu'
+        ]
+    },
+    authStrategy: new LocalAuth({
+        dataPath: constants.sessionPath
+    }),
+    webVersionCache: {
+        type: "remote",
+        remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${webVersion}.html`
+    }
+});
 
 	// WhatsApp auth
 	client.on(Events.QR_RECEIVED, (qr: string) => {
