@@ -1,5 +1,0 @@
-[phases.setup]
-env = { SERPAPI_KEY = "${{SERPAPI_KEY}}" }
-
-[start]
-cmd = "SERPAPI_KEY=$SERPAPI_KEY npm run start"
