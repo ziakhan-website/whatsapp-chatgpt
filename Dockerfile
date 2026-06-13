@@ -48,7 +48,7 @@ chromium \
 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # FFmpeg for transcription/voice
-RUN apt-get install -y ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # Puppeteer ko system chromium use karne ka bolo
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
