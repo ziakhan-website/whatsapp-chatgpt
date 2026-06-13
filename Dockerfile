@@ -62,7 +62,7 @@ ENV PREFIX_ENABLED=""
 
 # Package files copy karke install
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
 RUN npm install vite-node
 
 # Baaki code copy
