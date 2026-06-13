@@ -89,7 +89,11 @@ const start = async () => {
 		// Ignore if it's a quoted message, (e.g. Bot reply)
 		if (message.hasQuotedMsg) return;
 
-		await handleIncomingMessage(message);
+		const prompt = message.body;
+const result = await model.generateContent(prompt);
+const response = await result.response;
+const text = response.text();
+await message.reply(text);
 	});
 
 	// Reply to own message
