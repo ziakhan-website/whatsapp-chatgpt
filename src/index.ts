@@ -46,23 +46,13 @@ const client = new Client({
 });
 
 	// WhatsApp auth
-	client.on(Events.QR_RECEIVED, (qr: string) => {
-		console.log("");
-		console.log(`QR Image Link: https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qr)}`);
-		qrcode.toString(
-			qr,
-			{
-				type: "terminal",
-				small: true,
-				margin: 2,
-				scale: 1
-			},
-			(err, url) => {
-				if (err) throw err;
-				cli.printQRCode(url);
-			}
-		);
-	});
+	client.on(Events.QR_RECEIVED, async (qr: string) => {
+    if(!client.authState.creds.registered){
+        await delay(3000)
+        const code = await client.requestPairingCode('923349337099')
+        console.log('PAIRING CODE:', code)
+    }
+});
 
 	// WhatsApp loading
 	client.on(Events.LOADING_SCREEN, (percent) => {
