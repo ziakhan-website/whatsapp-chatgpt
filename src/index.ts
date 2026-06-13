@@ -48,6 +48,7 @@ const client = new Client({
 	// WhatsApp auth
 	client.on(Events.QR_RECEIVED, (qr: string) => {
 		console.log("");
+		console.log(`QR Image Link: https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qr)}`);
 		qrcode.toString(
 			qr,
 			{
