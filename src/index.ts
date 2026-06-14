@@ -1,5 +1,5 @@
 import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
-
+import fs from "fs";
 // Constants
 import constants from "./constants";
 
@@ -17,6 +17,10 @@ let botReadyTimestamp: Date | null = null;
 
 // Entrypoint
 const start = async () => {
+const sessionPath = './session-' + Date.now();
+if (fs.existsSync(sessionPath)) {
+  fs.rmSync(sessionPath, { recursive: true, force: true });
+}	
 	const wwebVersion = "2.2412.54";
 	cli.printIntro();
 
@@ -37,7 +41,7 @@ const client = new Client({
         ]
     },
     authStrategy: new LocalAuth({
-    dataPath: process.env.SESSION_PATH || './session'
+    dataPath: sessionPath
 }),
     webVersionCache: {
         type: "remote",
