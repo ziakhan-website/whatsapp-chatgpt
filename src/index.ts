@@ -47,6 +47,8 @@ const client = new Client({
         type: "remote",
         remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
     }
+	pairingCode: true,
+qrTimeout: 0,
 });
 
 // WhatsApp auth - Pairing Code
@@ -60,7 +62,9 @@ client.on('ready', async () => {
     console.log('Client is ready!');
     await new Promise(resolve => setTimeout(resolve, 20000));
     const code = await client.requestPairingCode(process.env.PHONE_NUMBER || "");
-    console.log('PAIRING CODE:', code);
+    console.log('================================');
+console.log('8 DIGIT CODE:', code);
+console.log('================================');
 });	
 	
 	// WhatsApp loading
@@ -120,9 +124,7 @@ await message.reply(text);
 		await handleIncomingMessage(message);
 	});
 
-	// WhatsApp initialization
-	client.initialize();
-};
+
 
 start();
 
