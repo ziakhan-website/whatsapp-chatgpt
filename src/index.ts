@@ -35,8 +35,6 @@ const client = new Client({
             '--no-zygote',
                         '--single-process',
             '--disable-gpu'
-		    '--disable-features=IsolateOrigins,site-per-process',
-            '--disable-web-security'
         ]
     },
     authStrategy: new LocalAuth({
