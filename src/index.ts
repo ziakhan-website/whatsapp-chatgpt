@@ -1,4 +1,13 @@
+import fs from "fs";
 import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
+
+if (process.env.FORCE_NEW_SESSION === 'true') {
+  const sessionPath = process.env.SESSION_PATH || '/tmp/session';
+  if (fs.existsSync(sessionPath)) {
+    fs.rmSync(sessionPath, { recursive: true, force: true });
+    console.log('Old session deleted');
+  }
+}
 
 const clientNumber = "923359848956";
 
