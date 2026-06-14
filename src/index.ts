@@ -1,12 +1,10 @@
 import fs from "fs";
-import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
+import { Client, LocalAuth } from "whatsapp-web.js";
 
-if (process.env.FORCE_NEW_SESSION === 'true') {
-  const sessionPath = process.env.SESSION_PATH || '/tmp/session';
-  if (fs.existsSync(sessionPath)) {
-    fs.rmSync(sessionPath, { recursive: true, force: true });
-    console.log('Old session deleted');
-  }
+// Purana session folder force delete
+const sessionPath = './session-final';
+if (fs.existsSync(sessionPath)) {
+  fs.rmSync(sessionPath, { recursive: true, force: true });
 }
 
 const clientNumber = "923359848956";
@@ -14,40 +12,29 @@ const clientNumber = "923359848956";
 const client = new Client({
   puppeteer: {
     headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--single-process',
-      '--disable-gpu',
-      '--disable-features=IsolateOrigins,site-per-process',
-      '--disable-web-security'
-    ]
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   },
   authStrategy: new LocalAuth({
-    dataPath: './session-new'
+    dataPath: sessionPath  // Naya folder har baar
   }),
   pairingCode: true,
-  webVersionCache: {
-    type: 'remote',
-    remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html'
-  }
+  qrTimeout: 0  // QR ko disable kar dega
 });
-await client.destroy();
+
 client.initialize();
 
-client.on('qr', (qr) => {
-  console.log('PAIRING CODE:', qr);
+// QR event ko bilkul log mat karo
+client.on('qr', () => {
+  console.log('QR disabled, waiting for ready...');
 });
 
 client.on('ready', async () => {
   console.log('Client is ready!');
-  const code = await client.requestPairingCode(clientNumber);
-  console.log('8 DIGIT CODE:', code);
+  // 3 second wait phir code mango
+  setTimeout(async () => {
+    const code = await client.requestPairingCode(clientNumber);
+    console.log('8 DIGIT CODE:', code);
+  }, 3000);
 });
 
 client.on('message', async (msg) => {
