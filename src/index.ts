@@ -45,9 +45,9 @@ const client = new Client({
     }
 });
 
-	// WhatsApp auth
-	client.on(Events.QR_RECEIVED, async () => {
-		await new Promise(resolve => setTimeout(resolve, 10000));
+	// WhatsApp auth - Pairing Code
+client.initialize().then(async () => {
+    await new Promise(resolve => setTimeout(resolve, 10000));
     const code = await client.requestPairingCode(process.env.PHONE_NUMBER || "");
     console.log('PAIRING CODE:', code);
 });
