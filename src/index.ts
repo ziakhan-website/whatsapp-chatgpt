@@ -23,9 +23,10 @@ const start = async () => {
 
 	// WhatsApp Client
 const client = new Client({
-    puppeteer: {
-        headless: true,
-        args: [
+   puppeteer: {
+    headless: true,
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,  // <-- ye line 28 pe add karo
+    args: [ 
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
