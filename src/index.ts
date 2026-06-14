@@ -1,49 +1,125 @@
-import fs from "fs";
-import { Client, LocalAuth } from "whatsapp-web.js";
+import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
 
-async function startBot() {
-  // Har baar naya folder
-  const sessionPath = './session-final-' + Date.now();
-  if (fs.existsSync(sessionPath)) {
-    fs.rmSync(sessionPath, { recursive: true, force: true });
-  }
+// Constants
+import constants from "./constants";
 
-  const clientNumber = "923359848956";
+// CLI
+import * as cli from "./cli/ui";
+import { handleIncomingMessage } from "./handlers/message";
 
-  const client = new Client({
-    puppeteer: {
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+// Config
+import { GoogleGenerativeAI } from "@google/generative-ai";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || "gemini-1.5-flash" });
+
+// Ready timestamp of the bot
+let botReadyTimestamp: Date | null = null;
+
+// Entrypoint
+const start = async () => {
+	const wwebVersion = "2.2412.54";
+	cli.printIntro();
+
+	// WhatsApp Client
+const client = new Client({
+   puppeteer: {
+    headless: true,
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,  // <-- ye line 28 pe add karo
+    args: [ 
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+                        '--single-process',
+            '--disable-gpu'
+        ]
     },
     authStrategy: new LocalAuth({
-      dataPath: sessionPath
-    }),
-    pairingCode: true,
-    qrTimeout: 0
-  });
+    dataPath: process.env.SESSION_PATH || './session'
+}),
+    webVersionCache: {
+        type: "remote",
+        remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
+    }
+});
 
-  client.initialize();
+// WhatsApp auth - Pairing Code
+client.initialize();
 
-  client.on('qr', () => {});
+client.on('auth_failure', (msg) => {
+    console.log('AUTH FAILED:', msg);
+});
 
-  client.on('ready', async () => {
+client.on('ready', async () => {
     console.log('Client is ready!');
-    setTimeout(async () => {
-      const code = await client.requestPairingCode(clientNumber);
-      console.log('8 DIGIT CODE:', code);
-    }, 4000);
-  });
+    await new Promise(resolve => setTimeout(resolve, 20000));
+    const code = await client.requestPairingCode(process.env.PHONE_NUMBER || "");
+    console.log('PAIRING CODE:', code);
+});	
+	
+	// WhatsApp loading
+	client.on(Events.LOADING_SCREEN, (percent) => {
+		if (percent == "0") {
+			cli.printLoading();
+		}
+	});
 
-  client.on('disconnected', (reason) => {
-    console.log('Disconnected:', reason);
-  });
+	// WhatsApp authenticated
+	client.on(Events.AUTHENTICATED, () => {
+		cli.printAuthenticated();
+	});
 
-  client.on('error', (err) => {
-    console.log('Error:', err);
-  });
-}
+	// WhatsApp authentication failure
+	client.on(Events.AUTHENTICATION_FAILURE, () => {
+		cli.printAuthenticationFailure();
+	});
 
-startBot();
+	// WhatsApp ready
+	client.on(Events.READY, () => {
+		// Print outro
+		cli.printOutro();
 
-// Railway ko zinda rakhne ke liye
-setInterval(() => {}, 1000 * 60 * 60);
+		// Set bot ready timestamp
+		botReadyTimestamp = new Date();
+
+		initAiConfig();
+	});
+
+	// WhatsApp message
+	client.on(Events.MESSAGE_RECEIVED, async (message: any) => {
+		// Ignore if message is from status broadcast
+		if (message.from == constants.statusBroadcast) return;
+
+		// Ignore if it's a quoted message, (e.g. Bot reply)
+		if (message.hasQuotedMsg) return;
+
+		const prompt = message.body;
+const result = await model.generateContent(prompt);
+const response = await result.response;
+const text = response.text();
+await message.reply(text);
+	});
+
+	// Reply to own message
+	client.on(Events.MESSAGE_CREATE, async (message: Message) => {
+		// Ignore if message is from status broadcast
+		if (message.from == constants.statusBroadcast) return;
+
+		// Ignore if it's a quoted message, (e.g. Bot reply)
+		if (message.hasQuotedMsg) return;
+
+		// Ignore if it's not from me
+		if (!message.fromMe) return;
+
+		await handleIncomingMessage(message);
+	});
+
+	// WhatsApp initialization
+	client.initialize();
+};
+
+start();
+
+export { botReadyTimestamp };
