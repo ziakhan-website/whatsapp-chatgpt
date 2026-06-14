@@ -1,5 +1,7 @@
 import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
 
+const clientNumber = "923359848956";
+
 const client = new Client({
   puppeteer: {
     headless: true,
@@ -18,8 +20,9 @@ const client = new Client({
     ]
   },
   authStrategy: new LocalAuth({
-    dataPath: process.env.SESSION_PATH || './tmp/session'
+    dataPath: process.env.SESSION_PATH || '/tmp/session'
   }),
+  pairingCode: true,
   webVersionCache: {
     type: 'remote',
     remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html'
@@ -32,8 +35,10 @@ client.on('qr', (qr) => {
   console.log('PAIRING CODE:', qr);
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
   console.log('Client is ready!');
+  const code = await client.requestPairingCode(clientNumber);
+  console.log('8 DIGIT CODE:', code);
 });
 
 client.on('message', async (msg) => {
