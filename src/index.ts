@@ -37,8 +37,8 @@ const client = new Client({
         ]
     },
     authStrategy: new LocalAuth({
-        dataPath: constants.sessionPath
-    }),
+    dataPath: process.env.SESSION_PATH || './session'
+}),
     webVersionCache: {
         type: "remote",
         remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
