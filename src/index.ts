@@ -45,12 +45,19 @@ const client = new Client({
     }
 });
 
-	// WhatsApp auth - Pairing Code
-    client.initialize().then(async () => {
-    await new Promise(resolve => setTimeout(resolve, 10000));
+// WhatsApp auth - Pairing Code
+client.initialize();
+
+client.on('auth_failure', (msg) => {
+    console.log('AUTH FAILED:', msg);
+});
+
+client.on('ready', async () => {
+    console.log('Client is ready!');
+    await new Promise(resolve => setTimeout(resolve, 20000));
     const code = await client.requestPairingCode(process.env.PHONE_NUMBER || "");
     console.log('PAIRING CODE:', code);
-});
+});	
 	
 	// WhatsApp loading
 	client.on(Events.LOADING_SCREEN, (percent) => {
