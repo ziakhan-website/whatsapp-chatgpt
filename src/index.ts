@@ -18,7 +18,7 @@ const client = new Client({
     ]
   },
   authStrategy: new LocalAuth({
-    dataPath: process.env.SESSION_PATH || './session'
+    dataPath: process.env.SESSION_PATH || './tmp/session'
   }),
   webVersionCache: {
     type: 'remote',
