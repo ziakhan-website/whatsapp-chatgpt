@@ -1,4 +1,4 @@
-import qrcode from "qrcode";
+
 import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
 
 // Constants
@@ -46,12 +46,9 @@ const client = new Client({
 });
 
 	// WhatsApp auth
-	client.on(Events.QR_RECEIVED, async (qr: string) => {
-    if(!client.authState.creds.registered){
-        await delay(3000)
-        const code = await client.requestPairingCode('923349337099')
-        console.log('PAIRING CODE:', code)
-    }
+	client.on(Events.QR_RECEIVED, async () => {
+    const code = await client.requestPairingCode('923349337099');
+    console.log('PAIRING CODE:', code);
 });
 
 	// WhatsApp loading
