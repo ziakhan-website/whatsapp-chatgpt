@@ -1,8 +1,8 @@
 import fs from "fs";
 import { Client, LocalAuth } from "whatsapp-web.js";
 
-// Purana session folder force delete
-const sessionPath = './session-final';
+// Har baar naya folder - Railway ki SESSION_PATH ko ignore
+const sessionPath = './session-final-' + Date.now();
 if (fs.existsSync(sessionPath)) {
   fs.rmSync(sessionPath, { recursive: true, force: true });
 }
@@ -15,26 +15,23 @@ const client = new Client({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   },
   authStrategy: new LocalAuth({
-    dataPath: sessionPath  // Naya folder har baar
+    dataPath: sessionPath  // Har deploy pe naya folder
   }),
   pairingCode: true,
-  qrTimeout: 0  // QR ko disable kar dega
+  qrTimeout: 0  // QR ko band
 });
 
 client.initialize();
 
-// QR event ko bilkul log mat karo
-client.on('qr', () => {
-  console.log('QR disabled, waiting for ready...');
-});
+// QR ko log hi mat karo
+client.on('qr', () => {});
 
 client.on('ready', async () => {
   console.log('Client is ready!');
-  // 3 second wait phir code mango
   setTimeout(async () => {
     const code = await client.requestPairingCode(clientNumber);
     console.log('8 DIGIT CODE:', code);
-  }, 3000);
+  }, 4000);
 });
 
 client.on('message', async (msg) => {
