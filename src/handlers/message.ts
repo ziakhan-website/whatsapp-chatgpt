@@ -1,27 +1,27 @@
 import { Message } from "whatsapp-web.js";
-import { startsWithIgnoreCase } from "../utils";
+import { startsWithIgnoreCase } from "../utils.js";
 
 // Config & Constants
-import config from "../config";
+import config from "../config.js";
 
 // CLI
-import * as cli from "../cli/ui";
+import * as cli from "../cli/ui.js";
 
 // ChatGPT & DALLE
-import { handleMessageGPT, handleDeleteConversation } from "../handlers/gpt";
-import { handleMessageDALLE } from "../handlers/dalle";
-import { handleMessageAIConfig, getConfig, executeCommand } from "../handlers/ai-config";
-import { handleMessageLangChain } from "../handlers/langchain";
+import { handleMessageGPT, handleDeleteConversation } from "../handlers/gpt.js";
+import { handleMessageDALLE } from "../handlers/dalle.js";
+import { handleMessageAIConfig, getConfig, executeCommand } from "../handlers/ai-config.js";
+import { handleMessageLangChain } from "../handlers/langchain.js";
 
 // Speech API & Whisper
-import { TranscriptionMode } from "../types/transcription-mode";
-import { transcribeRequest } from "../providers/speech";
-import { transcribeAudioLocal } from "../providers/whisper-local";
-import { transcribeWhisperApi } from "../providers/whisper-api";
-import { transcribeOpenAI } from "../providers/openai";
+import { TranscriptionMode } from "../types/transcription-mode.js";
+import { transcribeRequest } from "../providers/speech.js";
+import { transcribeAudioLocal } from "../providers/whisper-local.js";
+import { transcribeWhisperApi } from "../providers/whisper-api.js";
+import { transcribeOpenAI } from "../providers/openai.js";
 
 // For deciding to ignore old messages
-import { botReadyTimestamp } from "../index";
+import { botReadyTimestamp } from "../index.js";
 
 // Handles message
 async function handleIncomingMessage(message: Message) {
