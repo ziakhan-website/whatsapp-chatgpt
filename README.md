@@ -46,3 +46,4 @@ NOTE: We can't guarantee that you won't be blocked using this method, although i
 -   https://github.com/transitive-bullshit/chatgpt-api
 -   https://github.com/pedroslopez/whatsapp-web.js
 -   https://github.com/askrella/speech-rest-api
+-   
