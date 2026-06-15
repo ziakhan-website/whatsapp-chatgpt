@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ["chromium", "nss", "atk", "cups", "gtk3", "libxss", "libasound2"]
+
+[start]
+cmd = "npx vite-node src/index.ts"
