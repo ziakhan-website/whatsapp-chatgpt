@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-import config from "../config";
+import config from "../config.js";
 
 /**
  * @param text The sentence to be converted to speech
