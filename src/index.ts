@@ -1,11 +1,11 @@
 import { Client, Message, Events, LocalAuth } from "whatsapp-web.js";
 import fs from "fs";
 // Constants
-import constants from "./constants";
+import constants from "./constants.js";
 
 // CLI
-import * as cli from "./cli/ui";
-import { handleIncomingMessage } from "./handlers/message";
+import * as cli from "./cli/ui.js";
+import { handleIncomingMessage } from "./handlers/message.js";
 
 // Config
 import { GoogleGenerativeAI } from "@google/generative-ai";
