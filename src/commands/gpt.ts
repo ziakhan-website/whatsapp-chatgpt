@@ -1,7 +1,7 @@
-import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
+import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import { Message } from "whatsapp-web.js";
-import { config } from "../config";
-import { initOpenAI } from "../providers/openai";
+import { config } from "../config.js";
+import { initOpenAI } from "../providers/openai.js";
 
 export const GptModule: ICommandModule = {
 	key: "gpt",
