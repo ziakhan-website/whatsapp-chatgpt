@@ -28,13 +28,13 @@ const handleMessageDALLE = async (message: any, prompt: any) => {
 		const response = await openai.images.generate({
 			prompt: prompt,
 			n: 1,
-			size: aiConfig.dalle.size as CreateImageRequestSizeEnum,
+			size: aiConfig.dalle.size as "1024x1024",
 			response_format: "b64_json"
 		});
 
 		const end = Date.now() - start;
 
-		const base64 = response.data.data[0].b64_json as string;
+		const base64 = response.data[0].b64_json as string;
 		const image = new MessageMedia("image/jpeg", base64, "image.jpg");
 
 		cli.print(`[DALL-E] Answer to ${message.from} | OpenAI request took ${end}ms`);
