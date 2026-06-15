@@ -17,10 +17,7 @@ let botReadyTimestamp: Date | null = null;
 
 // Entrypoint
 const start = async () => {
-const sessionPath = './session-' + Date.now();
-if (fs.existsSync(sessionPath)) {
-  fs.rmSync(sessionPath, { recursive: true, force: true });
-}	
+const sessionPath = './session';	
 	const wwebVersion = "2.2412.54";
 	cli.printIntro();
 
