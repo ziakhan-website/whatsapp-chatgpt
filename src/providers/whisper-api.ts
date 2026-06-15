@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "../config.js";
 
 async function transcribeWhisperApi(audioBlob: Blob): Promise<{ text: string; language: string }> {
 	const url = config.whisperServerUrl;
