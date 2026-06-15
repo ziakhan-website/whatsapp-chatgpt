@@ -1,6 +1,6 @@
 import { Message } from "whatsapp-web.js";
-import BrowserAgentProvider from "../providers/browser-agent";
-import * as cli from "../cli/ui";
+import BrowserAgentProvider from "../providers/browser-agent.js";
+import * as cli from "../cli/ui.js";
 
 const browserAgent = new BrowserAgentProvider();
 
