@@ -1,5 +1,6 @@
 {
   "name": "whatsapp-chatgpt",
+  "type": "module",
   "version": "1.0.0",
   "description": "Whatsapp bot that uses OpenAI's GPT & DALL-E to respond to user inputs",
   "main": "src/index.ts",
