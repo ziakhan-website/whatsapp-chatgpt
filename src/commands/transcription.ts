@@ -1,7 +1,7 @@
-import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
+import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import { Message } from "whatsapp-web.js";
-import { config } from "../config";
-import { TranscriptionMode } from "../types/transcription-mode";
+import { config } from "../config.js";
+import { TranscriptionMode } from "../types/transcription-mode.js";
 
 export const TranscriptionModule: ICommandModule = {
 	key: "transcription",
