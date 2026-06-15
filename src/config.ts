@@ -1,8 +1,8 @@
 import process from "process";
 
-import { TranscriptionMode } from "./types/transcription-mode";
-import { TTSMode } from "./types/tts-mode";
-import { AWSPollyEngine } from "./types/aws-polly-engine";
+import { TranscriptionMode } from "./types/transcription-mode.js";
+import { TTSMode } from "./types/tts-mode.js";
+import { AWSPollyEngine } from "./types/aws-polly-engine.js";
 
 // Environment variables
 import dotenv from "dotenv";
