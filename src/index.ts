@@ -46,7 +46,7 @@ const client = new Client({
         type: "remote",
         remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
     },
-qrTimeout: 0,
+
 });
 
 // WhatsApp auth - Pairing Code
