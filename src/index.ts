@@ -25,7 +25,7 @@ const sessionPath = process.env.SESSION_PATH || './session';
 const client = new Client({
    puppeteer: {
     headless: 'new',
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    executablePath: '/usr/bin/chromium',
     args: [ 
         '--no-sandbox',
         '--disable-setuid-sandbox',
