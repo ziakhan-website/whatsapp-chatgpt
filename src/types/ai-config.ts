@@ -1,5 +1,5 @@
 import { ICommandsMap } from "./commands";
-import { dalleConfigType, dalleImageSize } from "./dalle-config";
+import { dalleConfigType, dalleImageSize } from "./dalle-config.js";
 
 export enum aiConfigTarget {
 	dalle = "dalle"
