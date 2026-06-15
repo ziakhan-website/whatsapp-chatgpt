@@ -9,7 +9,7 @@ import { TranscriptionModule } from "../commands/transcription.js";
 import { TTSModule } from "../commands/tts.js";
 import { StableDiffusionModule } from "../commands/stable-diffusion.js";
 
-import config from "../config";
+import config from "../config.js";
 
 let aiConfig: IAiConfig = {
 	dalle: {
