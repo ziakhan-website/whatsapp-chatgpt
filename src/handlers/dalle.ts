@@ -1,12 +1,12 @@
 import { MessageMedia } from "whatsapp-web.js";
-import { openai } from "../providers/openai";
-import { aiConfig } from "../handlers/ai-config";
+import { openai } from "../providers/openai.js";
+import { aiConfig } from "../handlers/ai-config.js";
 import OpenAI from "openai";
-import config from "../config";
-import * as cli from "../cli/ui";
+import config from "../config.js";
+import * as cli from "../cli/ui.js";
 
 // Moderation
-import { moderateIncomingPrompt } from "./moderation";
+import { moderateIncomingPrompt } from "./moderation.js";
 
 const handleMessageDALLE = async (message: any, prompt: any) => {
 	try {
