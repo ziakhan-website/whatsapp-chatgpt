@@ -1,6 +1,6 @@
-import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
+import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import { Message } from "whatsapp-web.js";
-import { config } from "../config";
+import { config } from "../config.js";
 
 export const TTSModule: ICommandModule = {
 	key: "tts",
