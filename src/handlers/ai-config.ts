@@ -1,13 +1,13 @@
 import { Message } from "whatsapp-web.js";
-import { aiConfigTarget, aiConfigTypes, aiConfigValues, IAiConfig } from "../types/ai-config";
-import { dalleImageSize } from "../types/dalle-config";
-import { GeneralModule } from "../commands/general";
-import { ChatModule } from "../commands/chat";
-import { ICommandDefinition } from "../types/commands";
-import { GptModule } from "../commands/gpt";
-import { TranscriptionModule } from "../commands/transcription";
-import { TTSModule } from "../commands/tts";
-import { StableDiffusionModule } from "../commands/stable-diffusion";
+import { aiConfigTarget, aiConfigTypes, aiConfigValues, IAiConfig } from "../types/ai-config.js";
+import { dalleImageSize } from "../types/dalle-config.js";
+import { GeneralModule } from "../commands/general.js";
+import { ChatModule } from "../commands/chat.js";
+import { ICommandDefinition } from "../types/commands.js";
+import { GptModule } from "../commands/gpt.js";
+import { TranscriptionModule } from "../commands/transcription.js";
+import { TTSModule } from "../commands/tts.js";
+import { StableDiffusionModule } from "../commands/stable-diffusion.js";
 
 import config from "../config";
 
