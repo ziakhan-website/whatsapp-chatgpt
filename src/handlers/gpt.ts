@@ -3,20 +3,20 @@ import fs from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
 import { Message, MessageMedia } from "whatsapp-web.js";
-import { chatgpt } from "../providers/openai";
-import * as cli from "../cli/ui";
-import config from "../config";
+import { chatgpt } from "../providers/openai.js";
+import * as cli from "../cli/ui.js";
+import config from "../config.js";
 
 import { ChatMessage } from "chatgpt";
 
 // TTS
-import { ttsRequest as speechTTSRequest } from "../providers/speech";
-import { ttsRequest as awsTTSRequest } from "../providers/aws";
-import { TTSMode } from "../types/tts-mode";
+import { ttsRequest as speechTTSRequest } from "../providers/speech.js";
+import { ttsRequest as awsTTSRequest } from "../providers/aws.js";
+import { TTSMode } from "../types/tts-mode.js";
 
 // Moderation
-import { moderateIncomingPrompt } from "./moderation";
-import { aiConfig, getConfig } from "./ai-config";
+import { moderateIncomingPrompt } from "./moderation.js";
+import { aiConfig, getConfig } from "./ai-config.js";
 
 // Mapping from number to last conversation id
 const conversations = {};
