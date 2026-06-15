@@ -1,4 +1,4 @@
-import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
+import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import { Message } from "whatsapp-web.js";
 
 export const ChatModule: ICommandModule = {
