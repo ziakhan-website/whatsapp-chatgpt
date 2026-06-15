@@ -7,8 +7,8 @@ import OpenAI from "openai";
 
 import ffmpeg from "fluent-ffmpeg";
 import { blobFromSync, File } from "fetch-blob/from.js";
-import config from "../config";
-import { getConfig } from "../handlers/ai-config";
+import config from "../config.js";
+import { getConfig } from "../handlers/ai-config.js";
 
 export let chatgpt: ChatGPTAPI;
 
