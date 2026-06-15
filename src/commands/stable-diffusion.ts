@@ -1,6 +1,7 @@
 import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import pkg from 'whatsapp-web.js';
-const { Message, MessageMedia } = pkg;
+const { MessageMedia } = pkg;
+import { Message } from 'whatsapp-web.js';
 import * as cli from "../cli/ui.js";
 
 export const StableDiffusionModule: ICommandModule = {
