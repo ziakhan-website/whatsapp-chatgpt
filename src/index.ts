@@ -51,20 +51,13 @@ qrTimeout: 0,
 });
 
 // WhatsApp auth - Pairing Code
-client.initialize();
-
-client.on('auth_failure', (msg) => {
-    console.log('AUTH FAILED:', msg);
+client.on('code', async (code) => {
+  console.log('====================');
+  console.log('8 DIGIT CODE:', code);
+  console.log('====================');
 });
 
-client.on('ready', async () => {
-    console.log('Client is ready!');
-    await new Promise(resolve => setTimeout(resolve, 20000));
-    const code = await client.requestPairingCode(process.env.PHONE_NUMBER || "");
-    console.log('================================');
-console.log('8 DIGIT CODE:', code);
-console.log('================================');
-});	
+client.initialize();
 	
 	// WhatsApp loading
 	client.on(Events.LOADING_SCREEN, (percent) => {
