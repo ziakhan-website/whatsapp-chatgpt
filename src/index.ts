@@ -27,19 +27,21 @@ if (fs.existsSync(sessionPath)) {
 	// WhatsApp Client
 const client = new Client({
    puppeteer: {
-    headless: true,
+    headless: 'new',
     executablePath: '/usr/bin/chromium',
     args: [ 
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-                        '--single-process',
-            '--disable-gpu'
-        ]
-    },
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor'
+    ]
+},
     authStrategy: new LocalAuth({
     dataPath: sessionPath
 }),
