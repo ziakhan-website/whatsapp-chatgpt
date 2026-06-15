@@ -1,6 +1,6 @@
 import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
 import { Message } from "whatsapp-web.js";
-import { config } from "../config";
+import { config } from "../config.js";
 import { aiConfigTarget, aiConfigTypes, aiConfigValues, IAiConfig } from "../types/ai-config";
 import { aiConfig, getConfig } from "../handlers/ai-config";
 
