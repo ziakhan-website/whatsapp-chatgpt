@@ -1,8 +1,8 @@
-import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands";
+import { ICommandModule, ICommandDefinition, ICommandsMap } from "../types/commands.js";
 import { Message } from "whatsapp-web.js";
 import { config } from "../config.js";
-import { aiConfigTarget, aiConfigTypes, aiConfigValues, IAiConfig } from "../types/ai-config";
-import { aiConfig, getConfig } from "../handlers/ai-config";
+import { aiConfigTarget, aiConfigTypes, aiConfigValues, IAiConfig } from "../types/ai-config.js";
+import { aiConfig, getConfig } from "../handlers/ai-config.js";
 
 export const GeneralModule: ICommandModule = {
 	key: "general",
