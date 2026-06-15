@@ -1,6 +1,6 @@
-import * as cli from "../cli/ui";
-import config from "../config";
-import { openai } from "../providers/openai";
+import * as cli from "../cli/ui.js";
+import config from "../config.js";
+import { openai } from "../providers/openai.js";
 
 /**
  * Handle prompt moderation
