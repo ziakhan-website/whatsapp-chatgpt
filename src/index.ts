@@ -91,7 +91,7 @@ console.log('================================');
 		// Set bot ready timestamp
 		botReadyTimestamp = new Date();
 
-		initAiConfig();
+		
 	});
 
 	// WhatsApp message
