@@ -63,10 +63,11 @@ ENV PREFIX_ENABLED=""
 # Package files copy karke install
 COPY package.json package-lock.json ./
 RUN npm install
-RUN npm install vite-node
+
 
 # Baaki code copy
 COPY . .
+RUN npm run build
 
-# Start command
-CMD ["npm", "run", "start"]
+# Start command  
+CMD ["node", "dist/index.js"]
