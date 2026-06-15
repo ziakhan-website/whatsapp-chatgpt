@@ -24,7 +24,7 @@ const sessionPath = process.env.SESSION_PATH || './session';
 	// WhatsApp Client
 const client = new Client({
    puppeteer: {
-    headless: 'new',
+    headless:  true,
     executablePath: '/usr/bin/chromium',
     args: [ 
         '--no-sandbox',
