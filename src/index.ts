@@ -17,7 +17,7 @@ let botReadyTimestamp: Date | null = null;
 
 // Entrypoint
 const start = async () => {
-const sessionPath = './session';	
+const sessionPath = process.env.SESSION_PATH || './session';	
 	const wwebVersion = "2.2412.54";
 	cli.printIntro();
 
