@@ -14,7 +14,7 @@ const moderateIncomingPrompt = async (prompt: string) => {
 		input: prompt
 	});
 
-	const moderationResponseData = moderationResponse.data;
+	const moderationResponseData = moderationResponse;
 	const moderationResponseCategories = moderationResponseData.results[0].categories;
 	const blackListedCategories = config.promptModerationBlacklistedCategories;
 
