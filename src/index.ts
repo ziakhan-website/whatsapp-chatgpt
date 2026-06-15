@@ -125,7 +125,7 @@ await message.reply(text);
 	});
 
 
-
+}
 start();
 
 export { botReadyTimestamp };
