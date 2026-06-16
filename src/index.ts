@@ -38,14 +38,7 @@ const start = async () => {
  
      const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
  
-     // PAIRING CODE FORCE KARO - PEHLE YE CHALEGA
-     client.requestPairingCode(phoneNumber).then(code => {
-         console.log('====================');
-         console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
-         console.log('8 DIGIT CODE:', code);
-         console.log('====================');
-     });
- 
+     
      // PHIR BROWSER KHULEGA
      client.initialize();
  
@@ -63,7 +56,18 @@ const start = async () => {
         cli.printAuthenticationFailure();
     });
 
-    client.on(Events.READY, () => {
+    client.on(Events.READY, async () => {
+    cli.printOutro();
+    botReadyTimestamp = new Date();
+    console.log('✅ BOT CONNECT HO GAYA MUBARAK HO!');
+    
+    // CODE AB YAHAN NIKLEGA - BROWSER READY HONE KE BAAD
+    const code = await client.requestPairingCode(923359848956);
+    console.log('====================');
+    console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
+    console.log('8 DIGIT CODE:', code);
+    console.log('====================');
+});
         cli.printOutro();
         botReadyTimestamp = new Date();
         console.log('✅ BOT CONNECT HO GAYA MUBARAK HO!');
