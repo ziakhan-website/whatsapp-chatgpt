@@ -22,7 +22,7 @@
     "aws-sdk": "^2.1500.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
