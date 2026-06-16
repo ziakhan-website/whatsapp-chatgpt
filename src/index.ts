@@ -38,24 +38,20 @@ const start = async () => {
 // 923359848956
 const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
 
-// PAIRING CODE FORCE KARO
-client.requestPairingCode(phoneNumber).then(code => {
+
+    });
+
+    client.initialize();
+
+// PAIRING CODE FORCE KARO  <-- YE YAHAN AAYEGA
+client.requestPairingCode(923359848956).then(code => {
     console.log('====================');
     console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
     console.log('8 DIGIT CODE:', code);
     console.log('====================');
 });
-    // Pairing Code - YEHI CHAHIYE THA!
-    client.on('code', async (code) => {
-        console.log('====================');
-        console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
-        console.log('8 DIGIT CODE:', code);
-        console.log('====================');
-        qrcode.generate(code, {small: true});
-    });
 
-    client.initialize();
-    
+
     client.on(Events.LOADING_SCREEN, (percent) => {
         if (percent == "0") {
             cli.printLoading();
