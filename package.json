@@ -2,26 +2,17 @@
   "name": "whatsapp-chatgpt",
   "type": "module",
   "version": "1.0.0",
-  "description": "Whatsapp bot that uses OpenAI's GPT & DALL-E to respond to user inputs",
-  "main": "src/index.ts",
-  "author": "Askrella Software Agency UG (haftungsbeschrankt)",
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc"
   },
-  "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@whiskeysockets/baileys": "6.7.17",
-    "aws-sdk": "^2.1649.0",
-    "chatgpt": "^5.2.5",
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.2.0",
-    "langchain": "^0.0.156",
     "openai": "^4.52.1",
-    "picocolors": "^1.1.0",
     "pino": "^8.17.0",
-    "qrcode": "^1.5.3",
     "qrcode-terminal": "^0.12.0"
   },
   "engines": {
@@ -29,7 +20,6 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
-    "@types/qrcode": "^1.5.2",
     "@types/qrcode-terminal": "^0.12.1",
     "typescript": "^5.3.0"
   }
