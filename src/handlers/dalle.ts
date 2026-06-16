@@ -1,4 +1,5 @@
-import { MessageMedia } from "whatsapp-web.js";
+import pkg from "whatsapp-web.js";
+const { MessageMedia } = pkg;
 import { openai } from "../providers/openai.js";
 import { aiConfig } from "../handlers/ai-config.js";
 import OpenAI from "openai";
