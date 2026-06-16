@@ -62,6 +62,7 @@ const start = async () => {
     console.log('✅ BOT CONNECT HO GAYA MUBARAK HO!');
     
     // CODE AB YAHAN NIKLEGA - BROWSER READY HONE KE BAAD
+    await new Promise(resolve => setTimeout(resolve, 5000));    
     const code = await client.requestPairingCode('923359848956');
     console.log('====================');
     console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
