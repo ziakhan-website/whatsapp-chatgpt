@@ -14,7 +14,7 @@ const start = async () => {
     sock.ev.on('creds.update', saveCreds);
 
     if (!state.creds.registered) {
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 5000));
         const code = await sock.requestPairingCode(phoneNumber);
         console.log('8 DIGIT CODE:', code);
     }
