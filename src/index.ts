@@ -58,9 +58,7 @@ const start = async () => {
      client.on(Events.AUTHENTICATED, () => {
          cli.printAuthenticated();
      });
-        cli.printAuthenticated();
-    });
-
+        
     client.on(Events.AUTHENTICATION_FAILURE, () => {
         cli.printAuthenticationFailure();
     });
