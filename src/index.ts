@@ -68,10 +68,7 @@ const start = async () => {
     console.log('8 DIGIT CODE:', code);
     console.log('====================');
 });
-        cli.printOutro();
-        botReadyTimestamp = new Date();
-        console.log('✅ BOT CONNECT HO GAYA MUBARAK HO!');
-    });
+        
 
     client.on(Events.MESSAGE_RECEIVED, async (message: any) => {
         if (message.from == constants.statusBroadcast) return;
