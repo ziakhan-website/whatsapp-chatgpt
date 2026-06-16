@@ -1,17 +1,13 @@
 FROM node:bullseye-slim
 
-# Git + FFmpeg + SSH client install karo
 RUN apt-get update && apt-get install -y git ffmpeg openssh-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+# YE LINE JADU KAREGI - SSH ko HTTPS mein badal degi
+RUN git config --global url."https://github.com/".insteadOf git@github.com:
 
-# Package files copy karke install - ab lock file nahi hai
+WORKDIR /app
 COPY package.json ./
 RUN npm install
-
-# Baaki code copy
 COPY . .
 RUN npm run build
-
-# Start command  
 CMD ["node", "dist/index.js"]
