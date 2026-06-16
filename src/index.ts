@@ -1,5 +1,6 @@
 import pkg from 'whatsapp-web.js';
-const { Client, Message, Events, LocalAuth } = pkg;
+const { Client, Events, LocalAuth } = pkg;
+import { type Message } from 'whatsapp-web.js';
 import fs from "fs";
 // Constants
 import constants from "./constants.js";
