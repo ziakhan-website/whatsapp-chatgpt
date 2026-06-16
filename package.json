@@ -21,10 +21,11 @@
     "openai": "^4.52.1",
     "picocolors": "^1.1.0",
     "qrcode": "^1.5.3",
-    "whatsapp-web.js": "^1.25.0",
     "@google/generative-ai": "^0.21.0",
     "qrcode-terminal": "^0.12.0",
-"@types/qrcode-terminal": "^0.12.1"
+    "@types/qrcode-terminal": "^0.12.1",
+    "@whiskeysockets/baileys": "^6.7.18",
+    "pino": "^8.17.0"
   },
   "engines": {
     "node": ">=18.0.0"
