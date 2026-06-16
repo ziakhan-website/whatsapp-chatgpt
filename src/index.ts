@@ -1,7 +1,7 @@
 import pkg from 'whatsapp-web.js';
 const { Client, Events, LocalAuth } = pkg;
 import fs from "fs";
-import qrcode from "qrcode-terminal";
+import * as qrcode from "qrcode-terminal";
 
 // Constants
 import constants from "./constants.js";
