@@ -1,14 +1,10 @@
-FROM node:bullseye-slim
+FROM node:18-alpine
 
-RUN apt-get update && apt-get install -y git ffmpeg openssh-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ffmpeg
 
 WORKDIR /app
 COPY package.json ./
-
-# NPM ko force karo HTTPS use kare
-RUN npm config set registry https://registry.npmjs.org/
-RUN npm install --no-git
-
+RUN npm install --omit=dev
 COPY . .
 RUN npm run build
 CMD ["node", "dist/index.js"]
