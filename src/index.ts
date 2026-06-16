@@ -27,38 +27,37 @@ const start = async () => {
                 '--disable-gpu'
             ]
         },
-        authStrategy: new LocalAuth({
-            dataPath: sessionPath
-        }),
-        webVersionCache: {
-            type: "remote",
-            remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
-        }
-    });
-// 923359848956
-const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
-
-
-    });
-
-    client.initialize();
-
-// PAIRING CODE FORCE KARO  <-- YE YAHAN AAYEGA
-client.requestPairingCode(923359848956).then(code => {
-    console.log('====================');
-    console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
-    console.log('8 DIGIT CODE:', code);
-    console.log('====================');
-});
-
-
-    client.on(Events.LOADING_SCREEN, (percent) => {
-        if (percent == "0") {
-            cli.printLoading();
-        }
-    });
-
-    client.on(Events.AUTHENTICATED, () => {
+             authStrategy: new LocalAuth({
+31         dataPath: sessionPath
+32     }),
+33     webVersionCache: {
+34         type: "remote",
+35         remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
+36     }
+37     });
+38 
+39     const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
+40 
+41     // PAIRING CODE FORCE KARO - PEHLE YE CHALEGA
+42     client.requestPairingCode(phoneNumber).then(code => {
+43         console.log('====================');
+44         console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
+45         console.log('8 DIGIT CODE:', code);
+46         console.log('====================');
+47     });
+48 
+49     // PHIR BROWSER KHULEGA
+50     client.initialize();
+51 
+52     client.on(Events.LOADING_SCREEN, (percent) => {
+         if (percent == "0") {
+             cli.printLoading();
+         }
+     });
+ 
+     client.on(Events.AUTHENTICATED, () => {
+         cli.printAuthenticated();
+     });
         cli.printAuthenticated();
     });
 
