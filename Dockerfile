@@ -1,5 +1,8 @@
 FROM node:18-alpine
-RUN apk add --no-cache ffmpeg
+
+# Git + ffmpeg dono install
+RUN apk add --no-cache git ffmpeg
+
 WORKDIR /app
 COPY package.json ./
 RUN npm install --omit=dev
