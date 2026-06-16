@@ -2,7 +2,7 @@ import { makeWASocket, useMultiFileAuthState } from '@whiskeysockets/baileys';
 import pino from 'pino';
 
 const start = async () => {
-    const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
+    const phoneNumber = process.env.PHONE_NUMBER;
     const { state, saveCreds } = await useMultiFileAuthState('./session');
 
     const sock = makeWASocket({
