@@ -1,90 +1,61 @@
-import pkg from 'whatsapp-web.js';
-const { Client, Events, LocalAuth } = pkg;
-import fs from "fs";
-import * as qrcode from "qrcode-terminal";
-
-// Constants
-import constants from "./constants.js";
-import * as cli from "./cli/ui.js";
-
-let botReadyTimestamp: Date | null = null;
+import { makeWASocket, DisconnectReason, useMultiFileAuthState } from '@whiskeysockets/baileys';
+import { Boom } from '@hapi/boom';
+import pino from 'pino';
 
 const start = async () => {
-    const sessionPath = process.env.SESSION_PATH || './session';    
-    const wwebVersion = "2.2412.54";
-    cli.printIntro();
+    console.log('Bot starting...');
+    console.log('====================');
 
-    const client = new Client({
-        puppeteer: {
-            headless: true,
-            executablePath: '/usr/bin/chromium',
-            args: [ 
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--no-first-run',
-                '--no-zygote',
-                '--disable-gpu'
-            ]
-        },
-             authStrategy: new LocalAuth({
-         dataPath: sessionPath
-     }),
-     webVersionCache: {
-         type: "remote",
-         remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`
-     }
-     });
- 
-     const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
- 
-     
-     // PHIR BROWSER KHULEGA
-     client.initialize();
- 
-     client.on(Events.LOADING_SCREEN, (percent) => {
-         if (percent == "0") {
-             cli.printLoading();
-         }
-     });
- 
-     client.on(Events.AUTHENTICATED, () => {
-         cli.printAuthenticated();
-     });
-        
-    client.on(Events.AUTHENTICATION_FAILURE, () => {
-        cli.printAuthenticationFailure();
+    const phoneNumber = process.env.PHONE_NUMBER || '923359848956';
+    const { state, saveCreds } = await useMultiFileAuthState('./session');
+
+    const sock = makeWASocket({
+        auth: state,
+        printQRInTerminal: false,
+        logger: pino({ level: 'silent' }),
+        browser: ['Railway Bot', 'Chrome', '1.0.0']
     });
 
-    client.on(Events.READY, async () => {
-    cli.printOutro();
-    botReadyTimestamp = new Date();
-    console.log('✅ BOT CONNECT HO GAYA MUBARAK HO!');
-    
-    // CODE AB YAHAN NIKLEGA - BROWSER READY HONE KE BAAD
-    await new Promise(resolve => setTimeout(resolve, 5000));    
-    const code = await client.requestPairingCode('923359848956');
-    console.log('====================');
-    console.log('PAIRING CODE NECHE HAI - WHATSAPP KHOLO');
-    console.log('8 DIGIT CODE:', code);
-    console.log('====================');
-});
-        
+    sock.ev.on('creds.update', saveCreds);
 
-    client.on(Events.MESSAGE_RECEIVED, async (message: any) => {
-        if (message.from == constants.statusBroadcast) return;
-        if (message.hasQuotedMsg) return;
+    // PAIRING CODE GENERATION
+    if (!state.creds.registered) {
+        console.log('Waiting 3 seconds for WhatsApp server...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
 
-        const prompt = message.body;
-        
-        if(prompt?.toLowerCase() === 'ping') {
-            await message.reply('Pong! ✅ Bot zinda hai bhai');
+        const code = await sock.requestPairingCode(phoneNumber);
+        console.log('====================');
+        console.log('PAIRING CODE BELOW - OPEN WHATSAPP');
+        console.log('8 DIGIT CODE:', code);
+        console.log('====================');
+    }
+
+    sock.ev.on('connection.update', (update) => {
+        const { connection, lastDisconnect } = update;
+        if (connection === 'open') {
+            console.log('✅ BOT CONNECTED SUCCESSFULLY!');
+        } else if (connection === 'close') {
+            const statusCode = (lastDisconnect.error as Boom)?.output?.statusCode;
+            const shouldReconnect = statusCode!== DisconnectReason.loggedOut;
+            console.log('Connection closed, reason:', statusCode);
+            if (shouldReconnect) {
+                start();
+            }
         }
-        else {
-            await message.reply('Walaikum Salam! Main free bot hun 😄\n\nGemini/OpenAI nahi hai mere paas. API lagao to AI jawab dunga 😂');
+    });
+
+    sock.ev.on('messages.upsert', async (m) => {
+        const msg = m.messages[0];
+        if (!msg.message || msg.key.fromMe) return;
+
+        const text = msg.message.conversation || msg.message.extendedTextMessage?.text;
+
+        if (text?.toLowerCase() === 'ping') {
+            await sock.sendMessage(msg.key.remoteJid!, { text: 'Pong! Bot is alive ✅' });
+        } else {
+            await sock.sendMessage(msg.key.remoteJid!, { text: 'Hello! I am a free bot 😄' });
         }
     });
 }
-start();
 
-export { botReadyTimestamp };
+start();
