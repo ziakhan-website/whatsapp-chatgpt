@@ -6,30 +6,25 @@ const start = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('./session');
 
     const sock = makeWASocket({
-        auth: state,
-        printQRInTerminal: false,
-        logger: pino({ level: 'silent' })
-    });
+    auth: state,
+    printQRInTerminal: false,
+    logger: pino({ level: 'silent' }),
+    browser: ['Ubuntu', 'Chrome', '20.0.04'],
+    version: [2, 3000, 1023223821]
+});
 
     sock.ev.on('creds.update', saveCreds);
 
     if (!state.creds.registered) {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    await new Promise(resolve => {
-    const checkConnection = (update) => {
-        const { connection } = update;
-        if (connection === 'open' || connection === 'connecting') {
-            sock.ev.off('connection.update', checkConnection);
-            resolve(true);
+    sock.ev.on('connection.update', async (update) => {
+        if (update.connection === 'open') {
+            console.log('BOT CONNECTED!');
         }
-    };
-    sock.ev.on('connection.update', checkConnection);
-    setTimeout(() => resolve(true), 10000);
-});
-    
-    const code = await sock.requestPairingCode(phoneNumber);
-    console.log('8 DIGIT CODE:', code);
+        if (update.qr || update.pairingCode) {
+            const code = await sock.requestPairingCode(phoneNumber);
+            console.log('8 DIGIT CODE:', code);
+        }
+    });
     }
 
     sock.ev.on('connection.update', (update) => {
