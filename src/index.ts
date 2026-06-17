@@ -12,13 +12,9 @@ async function startBot() {
     
     if (fs.existsSync('./session')) {
         fs.rmSync('./session', { recursive: true, force: true });
-        console.log('OLD SESSION DELETED');
     }
 
     const { state, saveCreds } = await useMultiFileAuthState('./session');
-    console.log('AUTH STATE CREATED');
-    
-    // Ye line sabse important hai - latest version auto fetch karega
     const { version } = await fetchLatestBaileysVersion();
     console.log('USING WA VERSION:', version);
     
@@ -27,12 +23,25 @@ async function startBot() {
         printQRInTerminal: false,
         auth: state,
         browser: ['Baileys', 'Chrome', '121.0.0'],
-        version: version, // Hardcoded version hata diya
+        version,
     });
-    
-    console.log('SOCKET CREATED - WAITING FOR CONNECTION');
 
     sock.ev.on('creds.update', saveCreds);
+
+    // Pairing code turant mango - connection ka wait nahi karna
+    if (!state.creds.registered) {
+        console.log('WAITING 3 SECONDS...');
+        await new Promise(r => setTimeout(r, 3000));
+        console.log('REQUESTING PAIRING CODE NOW...');
+        try {
+            const code = await sock.requestPairingCode(phoneNumber);
+            console.log('================================');
+            console.log('8 DIGIT CODE:', code);
+            console.log('================================');
+        } catch (err) {
+            console.log('PAIRING ERROR:', err);
+        }
+    }
 
     sock.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect } = update;
@@ -40,24 +49,15 @@ async function startBot() {
         
         if (connection === 'close') {
             const shouldReconnect = (lastDisconnect?.error as any)?.output?.statusCode !== DisconnectReason.loggedOut;
-            console.log('CONNECTION CLOSED:', lastDisconnect?.error);
+            console.log('CONNECTION CLOSED:', lastDisconnect?.error?.message);
             if (shouldReconnect) {
-                console.log('RECONNECTING...');
-                startBot();
+                console.log('RECONNECTING IN 5 SEC...');
+                setTimeout(startBot, 5000);
             }
         }
         
         if (connection === 'open') {
             console.log('CONNECTED TO WHATSAPP!');
-            
-            if (!state.creds.registered) {
-                console.log('REQUESTING PAIRING CODE...');
-                await new Promise(r => setTimeout(r, 3000));
-                const code = await sock.requestPairingCode(phoneNumber);
-                console.log('================================');
-                console.log('8 DIGIT CODE:', code);
-                console.log('================================');
-            }
         }
     });
 }
