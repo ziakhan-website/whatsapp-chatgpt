@@ -17,10 +17,16 @@ const start = async () => {
     await new Promise(resolve => setTimeout(resolve, 3000));
 
     await new Promise(resolve => {
-        sock.ev.on('connection.update', (update) => {
-            if (update.connection === 'connecting') resolve(true);
-        });
-    });
+    const checkConnection = (update) => {
+        const { connection } = update;
+        if (connection === 'open' || connection === 'connecting') {
+            sock.ev.off('connection.update', checkConnection);
+            resolve(true);
+        }
+    };
+    sock.ev.on('connection.update', checkConnection);
+    setTimeout(() => resolve(true), 10000);
+});
     
     const code = await sock.requestPairingCode(phoneNumber);
     console.log('8 DIGIT CODE:', code);
