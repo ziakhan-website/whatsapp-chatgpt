@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "@whiskeysockets/baileys": "^6.7.7",
+    "@whiskeysockets/baileys": "latest",
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.3",
