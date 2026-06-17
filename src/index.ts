@@ -1,6 +1,6 @@
 console.log('SCRIPT STARTED');
 
-import makeWASocket, { DisconnectReason, useMultiFileAuthState } from '@whiskeysockets/baileys';
+import makeWASocket, { DisconnectReason, useMultiFileAuthState, fetchLatestBaileysVersion } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import fs from 'fs';
 
@@ -18,12 +18,16 @@ async function startBot() {
     const { state, saveCreds } = await useMultiFileAuthState('./session');
     console.log('AUTH STATE CREATED');
     
+    // Ye line sabse important hai - latest version auto fetch karega
+    const { version } = await fetchLatestBaileysVersion();
+    console.log('USING WA VERSION:', version);
+    
     const sock = makeWASocket({
         logger: pino.default({ level: 'silent' }),
         printQRInTerminal: false,
         auth: state,
-        browser: ['Ubuntu', 'Chrome', '120.0.0'],
-        version: [2, 2413, 1],
+        browser: ['Baileys', 'Chrome', '121.0.0'],
+        version: version, // Hardcoded version hata diya
     });
     
     console.log('SOCKET CREATED - WAITING FOR CONNECTION');
@@ -35,7 +39,12 @@ async function startBot() {
         console.log('CONNECTION STATUS:', connection);
         
         if (connection === 'close') {
+            const shouldReconnect = (lastDisconnect?.error as any)?.output?.statusCode !== DisconnectReason.loggedOut;
             console.log('CONNECTION CLOSED:', lastDisconnect?.error);
+            if (shouldReconnect) {
+                console.log('RECONNECTING...');
+                startBot();
+            }
         }
         
         if (connection === 'open') {
@@ -43,7 +52,7 @@ async function startBot() {
             
             if (!state.creds.registered) {
                 console.log('REQUESTING PAIRING CODE...');
-                await new Promise(r => setTimeout(r, 2000));
+                await new Promise(r => setTimeout(r, 3000));
                 const code = await sock.requestPairingCode(phoneNumber);
                 console.log('================================');
                 console.log('8 DIGIT CODE:', code);
