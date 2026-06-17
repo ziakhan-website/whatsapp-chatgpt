@@ -5,7 +5,7 @@ import fs from 'fs';
 const start = async () => {
     console.log('BOT STARTING...');
     
-    const phoneNumber: string = process.env.PHONE_NUMBER || '';
+    const phoneNumber = process.env.PHONE_NUMBER || '';
     console.log('PHONE:', phoneNumber);
     
     if (!phoneNumber) {
@@ -13,13 +13,9 @@ const start = async () => {
         return;
     }
     
-    try {
-        if (fs.existsSync('./session')) {
-            fs.rmSync('./session', { recursive: true, force: true });
-            console.log('OLD SESSION DELETED');
-        }
-    } catch (e) {
-        console.log('Session delete failed:', e);
+    if (fs.existsSync('./session')) {
+        fs.rmSync('./session', { recursive: true, force: true });
+        console.log('OLD SESSION DELETED');
     }
 
     const { state, saveCreds } = await useMultiFileAuthState('./session');
@@ -27,12 +23,27 @@ const start = async () => {
 
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: false,
-        logger: pino({ level: 'silent' }),
-        browser: ['Ubuntu', 'Chrome', '110.0.0']
+        logger: pino.default({ level: 'silent' }),
+        browser: ['Ubuntu', 'Chrome', '110.0.0'],
+        printQRInTerminal: false
     });
 
     sock.ev.on('creds.update', saveCreds);
+
+    // Pairing code direct mango - QR ka wait nahi karna
+    if (!state.creds.registered) {
+        console.log('REQUESTING PAIRING CODE...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        try {
+            const code = await sock.requestPairingCode(phoneNumber);
+            console.log('================================');
+            console.log('8 DIGIT CODE:', code);
+            console.log('================================');
+            console.log('WhatsApp > Linked Devices > Link with phone number pe ye code daalo');
+        } catch (err) {
+            console.log('PAIRING ERROR:', err);
+        }
+    }
 
     sock.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect } = update;
@@ -41,24 +52,14 @@ const start = async () => {
         if (connection === 'close') {
             const shouldReconnect = (lastDisconnect?.error as any)?.output?.statusCode !== DisconnectReason.loggedOut;
             console.log('Connection closed. Reconnect:', shouldReconnect);
-            if (shouldReconnect) start();
+            if (shouldReconnect) {
+                console.log('RECONNECTING IN 5 SEC...');
+                setTimeout(start, 5000);
+            }
         }
         
         if (connection === 'open') {
             console.log('BOT CONNECTED SUCCESSFULLY!');
-        }
-        
-        if (update.qr) {
-            console.log('QR RECEIVED - GETTING PAIRING CODE...');
-            await new Promise(resolve => setTimeout(resolve, 3000)); // 2 sec wait
-            try {
-                const code = await sock.requestPairingCode(phoneNumber);
-                console.log('================================');
-                console.log('8 DIGIT CODE:', code);
-                console.log('================================');
-            } catch (err) {
-                console.log('PAIRING ERROR:', err);
-            }
         }
     });
 }
