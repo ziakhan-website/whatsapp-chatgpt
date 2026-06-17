@@ -27,11 +27,7 @@ const start = async () => {
     });
     }
 
-    sock.ev.on('connection.update', (update) => {
-        if (update.connection === 'open') {
-            console.log('BOT CONNECTED!');
-        }
-    });
+    
 }
 
 start();
